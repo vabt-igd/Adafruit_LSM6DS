@@ -181,6 +181,7 @@ public:
   uint16_t readPedometer(void);
 
   // Arduino compatible API
+  bool readTempAccelGyroRaw(uint8_t *rawData);
   int readAcceleration(float &x, float &y, float &z);
   float accelerationSampleRate(void);
   int accelerationAvailable(void);

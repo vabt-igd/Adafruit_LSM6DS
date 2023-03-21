@@ -454,13 +454,18 @@ void Adafruit_LSM6DS::highPassFilter(bool filter_enabled,
  *     @brief  Updates the measurement data for all sensors simultaneously
  */
 /**************************************************************************/
-void Adafruit_LSM6DS::_read(void) {
+
+bool Adafruit_LSM6DS::readTempAccelGyroRaw(uint8_t *rawData) {
   // get raw readings
   Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LSM6DS_OUT_TEMP_L, 14);
 
+  return data_reg.read(rawData, 14);
+}
+
+void Adafruit_LSM6DS::_read(void) {
   uint8_t buffer[14];
-  data_reg.read(buffer, 14);
+  readTempAccelGyroRaw(buffer);
 
   rawTemp = buffer[1] << 8 | buffer[0];
   temperature = (rawTemp / temperature_sensitivity) + 25.0;
